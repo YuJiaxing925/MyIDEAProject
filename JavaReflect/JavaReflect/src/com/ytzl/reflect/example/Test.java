@@ -21,5 +21,8 @@ public class Test {
         Person p=new Person();
         Class cls2=p.getClass();
         System.out.println("类的完全限定名称："+cls1.getTypeName());
+        if (true){
+            System.out.println(1);
+        }
     }
 }
