@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuntu.dao.StudentMapper">
+    <resultMap id="getPage" type="student">
+        <id property="stu_id" column="stu_id"></id>
+        <result property="stu_name" column="stu_name"></result>
+        <result property="stu_age" column="stu_age"></result>
+        <result property="stu_time" column="stu_time"></result>
+        <association property="score" javaType="score">
+            <result property="sc_fen" column="sc_fen"></result>
+        </association>
+
+    </resultMap>
+    <select id="getPageAll" resultMap="getPage" parameterType="com.yuntu.util.PageUtil">
+        select a.*,b.sc_fen from student a inner join score b on a.stu_id=b.stu_id limit ${(pageindex-1)*pagesize},#{pagesize};
+    </select>
+    <select id="getCount" resultType="int">
+        select count(1) from student a inner join score b on a.stu_id=b.stu_id
+    </select>
+    <delete id="delStudent" parameterType="int">
+        delete from student where stu_id=#{id};
+    </delete>
+    <update id="updStudent" parameterType="Student">
+        update student set
+                stu_name=#{stu_name},
+                stu_age=#{stu_age}
+        where stu_id=#{stu_id}
+    </update>
+    <insert id="addStudent" parameterType="Student">
+        insert  into student(stu_name,stu_age,stu_time) value(#{stu_name},#{stu_age},#{stu_time});
+    </insert>
+
+    <select id="getStudent" parameterType="int" resultMap="getPage">
+        select a.*,b.sc_fen from student a inner join score b on a.stu_id=b.stu_id where a.stu_id=#{id};
+    </select>
+</mapper>

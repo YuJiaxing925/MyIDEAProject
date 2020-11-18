@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuntu.dao.TeacherMapper">
+    <!--两表联查-->
+    <resultMap id="Teacher" type="Teacher">
+        <id property="id" column="id"></id>
+        <result property="t_no" column="t_no"></result>
+        <result property="t_name" column="t_name"></result>
+        <result property="position_id" column="position_id"></result>
+        <!-- association :1对1 的关系-->
+        <!--javatype类型-->
+        <association property="p" javaType="Position">
+            <id property="id" column="pid" ></id>
+            <result property="t_pos_name" column="t_pos_name"></result>
+        </association>
+    </resultMap>
+    <select id="getTeacherPositionById" resultMap="Teacher">
+        select t.*,p.id as pid ,p.t_pos_name
+        from tb_teacher t inner join tb_position p
+        on t.position_id=p.id;
+    </select>
+    <!--删除teacher-->
+    <delete id="delTeacherById" parameterType="int">
+        delete from tb_teacher where id=#{id};
+    </delete>
+    <!--增加teacher-->
+    <insert id="addTeacher" parameterType="Teacher">
+        insert into tb_teacher (t_no,t_name,position_id) value (#{t_no},#{t_name},#{position_id});
+    </insert>
+    <!--获取单个teacher-->
+    <resultMap id="getTeacher" type="Teacher">
+        <id property="id" column="id"></id>
+        <result property="t_no" column="t_no"></result>
+        <result property="t_name" column="t_name"></result>
+        <result property="position_id" column="position_id"></result>
+        <!-- association :1对1 的关系-->
+        <!--javatype类型-->
+        <association property="p" javaType="Position">
+            <id property="id" column="pid" ></id>
+            <result property="t_pos_name" column="t_pos_name"></result>
+        </association>
+    </resultMap>
+    <select id="getTeacherById" parameterType="int" resultMap="getTeacher">
+        select t.*,p.id as pid,p.t_pos_name from tb_teacher t inner join tb_position p on t.position_id=p.id where t.id=#{id};
+    </select>
+    <!--修改teacher-->
+    <update id="updTeacher" parameterType="Teacher">
+        update tb_teacher set t_no=#{t_no},t_name=#{t_name},position_id=#{position_id} where id =#{id};
+    </update>
+
+    <select id="getAll"  resultType="Teacher">
+        select id,t_no,t_name,position_id from tb_teacher
+        where t_namel like concat('%',#{t_name},'%') and position_id=#{position_id}
+    </select>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuntu.dao.EmployeeMapper" >
+    <resultMap id="getEmployeesMap" type="Employee">
+        <id property="e_id" column="e_id"></id>
+        <result property="e_name" column="e_name"/>
+        <result property="e_edu" column="e_edu"/>
+        <result property="e_r_id" column="e_r_id"/>
+        <result property="e_hiredate" column="e_hiredate"/>
+        <result property="e_money" column="e_money"/>
+        <association property="role" javaType="role">
+            <id property="r_id" column="r_id"></id>
+            <result property="r_name" column="r_name"/>
+        </association>
+    </resultMap>
+    <select id="getEmployees" resultMap="getEmployeesMap">
+        select e.*,r.r_id,r.r_name from employee e inner join role r on e.e_r_id=r.r_id
+    </select>
+
+    <delete id="delEmployeeById" parameterType="int">
+        delete from employee where e_id=#{e_id}
+    </delete>
+
+    <insert id="addEmployee" parameterType="Employee">
+        insert into employee (e_name,e_edu,e_r_id,e_hiredate,e_money) value (#{e_name},#{e_edu},#{e_r_id},#{e_hiredate},#{e_money});
+    </insert>
+
+    <update id="updEmployee" parameterType="Employee">
+        update employee
+        <set>
+            <if test="e_name!=null and e_name!=''">
+                e_name=#{e_name},
+            </if>
+            <if test="e_edu!=null and e_edu!=''">
+                e_edu=#{e_edu},
+            </if>
+            <if test="e_r_id!=null and e_r_id!=0">
+                e_r_id=#{e_r_id},
+            </if>
+            <if test="e_hiredate!=null and e_hiredate!=''">
+                e_hiredate=#{e_hiredate},
+            </if>
+            <if test="e_money!=null and e_money!=0">
+                e_money=#{e_money}
+            </if>
+        </set>
+        where e_id=#{e_id}
+    </update>
+
+    <select id="getEmployeeById" parameterType="int" resultType="Employee">
+        select * from employee where e_id=#{e_id}
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(1) from employee;
+    </select>
+
+    <!--分页-->
+    <resultMap id="getPage" type="Employee">
+        <id property="e_id" column="e_id"></id>
+        <result property="e_name" column="e_name"/>
+        <result property="e_edu" column="e_edu"/>
+        <result property="e_r_id" column="e_r_id"/>
+        <result property="e_hiredate" column="e_hiredate"/>
+        <result property="e_money" column="e_money"/>
+        <association property="role" javaType="role">
+            <id property="r_id" column="r_id"></id>
+            <result property="r_name" column="r_name"/>
+        </association>
+    </resultMap>
+    <select id="getEmployeeByPageUtil"  resultMap="getPage">
+        select e.*,r.r_id,r.r_name from employee e inner join role r on e.e_r_id=r.r_id order by e_id  LIMIT #{index},#{size};
+    </select>
+</mapper>

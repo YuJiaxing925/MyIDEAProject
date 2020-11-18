@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+">
+
+
+<!--如果使用注解，配置一个注解扫描仪-->
+<!--base-package:需要扫描包的路径-->
+
+    <context:component-scan base-package="com.yuntu.biz,com.yuntu.dao"/>
+    <!--定义userDao对象，指定id-->
+   <!-- <bean id="userDao" class="com.yuntu.dao.impl.UserDaoImpl"/>-->
+    <!--<bean id="userBiz" class="com.yuntu.biz.impl.UserBizImpl">
+        &lt;!&ndash;通过带参的构造方法赋值 &ndash;&gt;
+        <constructor-arg>
+            <ref bean="userDao"></ref>
+        </constructor-arg>
+        &lt;!&ndash;index:下表  type=“类型”  name：名称&ndash;&gt;
+    </bean>
+    &lt;!&ndash;P命名空间:注意通过set给值的&ndash;&gt;
+    <bean id="user" class="com.yuntu.entity.User" p:password="11" p:userName="11">
+
+    </bean>-->
+    <!--特殊字符
+    <![CDATA[]]>将特殊字符放入到此标签中
+
+    通过转义符：
+        < : &lt;
+        > : &gt;
+
+
+    -->
+    <bean id="user1" class="com.yuntu.entity.User">
+        <property name="password">
+            <value><![CDATA[</>]]></value>
+        </property>
+        <property name="userName">
+            <null/>
+        </property>
+        <property name="lists">
+            <list>
+                <value>1</value>
+                <value>2</value>
+                <value>3</value>
+                <value>4</value>
+            </list>
+        </property>
+        <property name="set">
+            <set>
+                <value>1</value>
+                <value>2</value>
+                <value>3</value>
+                <value>4</value>
+            </set>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="a" value="1"/>
+                <entry key="b" value="2"/>
+                <entry key="c" value="3"/>
+            </map>
+        </property>
+    </bean>
+</beans>

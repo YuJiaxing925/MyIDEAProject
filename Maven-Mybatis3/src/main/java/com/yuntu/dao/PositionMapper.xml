@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.PositionMapper">
+    <resultMap id="Position" type="Position">
+        <id property="id" column="pid" ></id>
+        <result property="t_pos_name" column="t_pos_name"></result>
+        <collection property="tlist" ofType="Teacher">
+            <id property="id" column="id"></id>
+            <result property="t_no" column="t_no"></result>
+            <result property="t_name" column="t_name"></result>
+            <result property="position_id" column="position_id"></result>
+        </collection>
+    </resultMap>
+<!--一般不查*1.效率低2.好对照-->
+    <select id="getTeacherByPositionId" resultMap="Position">
+        select t.* ,p.id as pid ,p.t_pos_name
+        from tb_position p inner join tb_teacher t
+        on p.id=t.position_id where p.id=#{id};
+    </select>
+    <!--查所有职位-->
+    <select id="getAll" resultType="Position">
+        select * from tb_position;
+    </select>
+    <resultMap id="PositionIdAndTeacherAndStudentResultMap" type="Position">
+        <id property="id" column="pid"/>
+        <result property="t_pos_name" column="t_pos_name"/>
+        <collection property="tlist" ofType="Teacher">
+            <id property="id" column="id"></id>
+            <result property="t_no" column="t_no"></result>
+            <result property="t_name" column="t_name"></result>
+            <result property="position_id" column="position_id"></result>
+            <collection property="studentList" ofType="Student">
+                <id property="id" column="sid"/>
+                <result property="t_stu_name" column="t_stu_name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!--一对多对多-->
+    <select id="selTeacherStudentByPositionId" resultMap="PositionIdAndTeacherAndStudentResultMap" parameterType="int">
+        SELECT p.id AS pid,p.t_pos_name,t.*,s.id AS sid,s.t_stu_name
+        FROM tb_position p INNER JOIN tb_teacher t ON p.id=t.position_id
+        INNER JOIN tb_stu_teach st ON t.id=st.t_teach_id
+        INNER JOIN tb_student s ON st.t_stu_id= s.id
+        where p.id=#{pid}
+    </select>
+</mapper>

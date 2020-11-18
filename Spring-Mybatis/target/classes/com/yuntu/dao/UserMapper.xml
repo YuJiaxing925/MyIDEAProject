@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.UserMapper">
+    <!--
+        id:映射当前文件中sql语句的表示
+        resultType:当前sql语句输出结果的映射类型
+    -->
+    <select id="count" resultType="int">
+        select count(1) as count from user;
+    </select>
+    <delete id="delUser" parameterType="int">
+        delete from user where u_id=#{id};
+    </delete>
+</mapper>

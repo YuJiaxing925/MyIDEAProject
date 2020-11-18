@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuntu.dao.InformationMapper">
+    <insert id="sendMail" parameterType="information">
+        insert into information (i_sendOutId,i_receiveId,i_content,i_isRead,i_title,i_createTime)
+        value (#{i_sendOutId},#{i_receiveId},#{i_content},#{i_isRead},#{i_title},#{i_createTime});
+    </insert>
+    <select id="getInformation" parameterType="int" resultType="information">
+        select * from information where i_receiveId=#{i_receiveId};
+    </select>
+    <update id="isRead" parameterType="int">
+        update information set i_isRead=1 where i_id=#{id};
+    </update>
+    <select id="readInformation" parameterType="int" resultType="information">
+        select * from information where i_id=#{id};
+    </select>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.UserMapper" >
+    <select id="getUserByPage" resultType="User"  parameterType="com.yuntu.util.PageUtil">
+        select * from user limit ${(pageindex-1)*pagesize},#{pagesize};
+    </select>
+    <select id="getCount" resultType="int">
+        select count(1) from user;
+    </select>
+
+
+    <select id="getUserById" parameterType="int" resultType="User">
+        select * from user  where u_id = #{id};
+    </select>
+    <select id="Login"  resultType="User">
+        select * from user  where u_username = #{username} and u_password = #{password} ;
+    </select>
+
+    <update id="updUser" parameterType="User">
+        update user set
+                u_userName=#{u_userName},
+                u_password=#{u_password},
+                u_imgUrl=#{u_imgUrl},
+                u_updateTime=#{u_updateTime}
+        where u_id=#{u_id};
+    </update>
+
+    <insert id="addUser" parameterType="User">
+        insert  into user (u_userName,u_password,u_imgUrl,u_createTime) value (#{u_userName},#{u_password},#{u_imgUrl},#{u_createTime});
+    </insert>
+
+    <select id="getRole" parameterType="int" resultType="int">
+        select u_role from user where u_id=#{id}
+    </select>
+
+    <select id="getUserFriendByUserFriendId" parameterType="int" resultType="User">
+        SELECT * FROM USER WHERE u_id IN (SELECT f_friendsUserID FROM friend WHERE f_userID=#{id});
+    </select>
+    <delete id="delFriend" parameterType="int" >
+        delete from friend where f_userID=#{id1} and f_friendsUserID=#{id2};
+    </delete>
+    <insert id="addFriend" parameterType="friend" >
+        insert  into friend (f_userID,f_friendsUserID,f_remarks,f_createTime)
+        values (#{f_userID},#{f_friendsU serID},#{f_remarks},#{f_createTime})
+        ,(#{f_friendsUserID},#{f_userID},#{f_remarks},#{f_createTime});
+    </insert>
+</mapper>

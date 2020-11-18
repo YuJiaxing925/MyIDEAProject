@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.PositionMapper">
+    <resultMap id="Position" type="Position">
+        <id property="id" column="pid" ></id>
+        <result property="t_pos_name" column="t_pos_name"></result>
+        <collection property="tlist" ofType="Teacher">
+            <id property="id" column="id"></id>
+            <result property="t_no" column="t_no"></result>
+            <result property="t_name" column="t_name"></result>
+            <result property="position_id" column="position_id"></result>
+        </collection>
+    </resultMap>
+<!--一般不查*1.效率低2.好对照-->
+    <select id="getTeacherByPositionId" resultMap="Position">
+        select t.* ,p.id as pid ,p.t_pos_name
+        from tb_position p inner join tb_teacher t
+        on p.id=t.position_id where p.id=#{id};
+    </select>
+    <!--查所有职位-->
+    <select id="getAll" resultType="Position">
+        select * from tb_position;
+    </select>
+</mapper>

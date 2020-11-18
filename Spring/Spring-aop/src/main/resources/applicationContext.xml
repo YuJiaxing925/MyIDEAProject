@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+    <bean id="biz" class="com.yuntu.biz.impl.UserBizImpl"/>
+    <bean id="bizLog" class="com.yuntu.aop.UserBizLogger"/>
+    <bean id="bizErrorLog" class="com.yuntu.aop.ErrorLogger"/>
+    <aop:config>
+        <!--定义一个切入点
+            切入点选择方式有很多
+            execution(public void addUser(com.yuntu.pojo.User))切入所有的addUser方法
+            execution(public int *(com.yuntu.entity));匹配entity包下面的所有int返回值类型的方法
+            excution(* com.yuntu.biz.*.*(..));匹配biz包下所有类的所有方法
+            excution(* com.yuntu.biz.*.*(..));匹配biz包下子包中的所有方法
+        -->
+        <aop:pointcut id="bizPointcut" expression="execution(public int addUser(com.yuntu.pojo.User))"/>
+
+        <!--引用增强方法-->
+        <aop:aspect ref="bizLog">
+            <!--&lt;!&ndash;前置增强&ndash;&gt;
+            <aop:before method="before" pointcut-ref="bizPointcut"/>
+            &lt;!&ndash;后置增强&ndash;&gt;
+            <aop:after-returning method="after" pointcut-ref="bizPointcut" returning="result"/>
+            &lt;!&ndash;最终增强&ndash;&gt;
+            <aop:after-throwing method="afterFinal" pointcut-ref="bizPointcut" />-->
+            <aop:around method="aroundLogger" pointcut-ref="bizPointcut"/>
+        </aop:aspect>
+        <!--<aop:aspect ref="bizErrorLog">
+            &lt;!&ndash;异常抛出增强
+            <aop:after-throwing method="afterThrowing" pointcut-ref="bizPointcut" throwing="e"/>
+
+            环绕增强&ndash;&gt;
+        </aop:aspect>-->
+    </aop:config>
+</beans>

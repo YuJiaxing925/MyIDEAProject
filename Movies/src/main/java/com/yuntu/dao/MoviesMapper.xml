@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuntu.dao.MoviesMapper">
+    <select id="getPageAll" resultType="Movies" parameterType="com.yuntu.util.MybatisUtil">
+        select * from movies limit ${(pageindex-1)*pagesize},#{pagesize};
+    </select>
+    <select id="getCount" resultType="int">
+        select count(1) from movies
+    </select>
+    <delete id="delMovies" parameterType="int">
+        delete from movies where m_id=#{id};
+    </delete>
+    <update id="updMovies" parameterType="movies">
+        update movies set
+                m_title=#{m_title},
+                m_score=#{m_score},
+                m_content=#{m_content},
+                m_release=#{m_release}
+        where m_id=#{m_id}
+    </update>
+    <insert id="addMovies" parameterType="movies">
+        insert  into movies(m_title,m_score,m_content,m_release) value(#{m_title},#{m_score},#{m_content},#{m_release});
+    </insert>
+
+    <select id="getMovies" resultType="Movies" parameterType="int">
+        select * from movies where m_id=#{id};
+    </select>
+</mapper>

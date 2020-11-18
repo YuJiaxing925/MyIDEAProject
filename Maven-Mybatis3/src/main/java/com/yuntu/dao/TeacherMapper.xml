@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuntu.dao.TeacherMapper">
+    <!--两表联查-->
+    <resultMap id="Teacher" type="Teacher">
+        <id property="id" column="id"></id>
+        <result property="t_no" column="t_no"></result>
+        <result property="t_name" column="t_name"></result>
+        <result property="position_id" column="position_id"></result>
+        <!-- association :1对1 的关系-->
+        <!--javatype类型-->
+        <association property="p" javaType="Position">
+            <id property="id" column="pid" ></id>
+            <result property="t_pos_name" column="t_pos_name"></result>
+        </association>
+    </resultMap>
+    <select id="getTeacherPositionById" resultMap="Teacher">
+        select t.*,p.id as pid ,p.t_pos_name
+        from tb_teacher t inner join tb_position p
+        on t.position_id=p.id;
+    </select>
+    <!--删除teacher-->
+    <delete id="delTeacherById" parameterType="int">
+        delete from tb_teacher where id=#{id};
+    </delete>
+    <!--增加teacher-->
+    <insert id="addTeacher" parameterType="Teacher">
+        insert into tb_teacher (t_no,t_name,position_id) value (#{t_no},#{t_name},#{position_id});
+    </insert>
+    <!--获取单个teacher-->
+    <resultMap id="getTeacher" type="Teacher">
+        <id property="id" column="id"></id>
+        <result property="t_no" column="t_no"></result>
+        <result property="t_name" column="t_name"></result>
+        <result property="position_id" column="position_id"></result>
+        <!-- association :1对1 的关系-->
+        <!--javatype类型-->
+        <association property="p" javaType="Position">
+            <id property="id" column="pid" ></id>
+            <result property="t_pos_name" column="t_pos_name"></result>
+        </association>
+    </resultMap>
+    <select id="getTeacherById" parameterType="int" resultMap="getTeacher">
+        select t.*,p.id as pid,p.t_pos_name from tb_teacher t inner join tb_position p on t.position_id=p.id where t.id=#{id};
+    </select>
+    <!--修改teacher-->
+    <update id="updTeacher" parameterType="Teacher">
+        update tb_teacher set t_no=#{t_no},t_name=#{t_name},position_id=#{position_id} where id =#{id};
+    </update>
+
+
+    <!--动态sql-->
+
+    <select id="getAll"  resultType="Teacher">
+        select id,t_no,t_name,position_id from tb_teacher
+        <!--trim标签中有四个属性 -->
+        <!--
+            prefix :给标签内sql加上前缀
+            prefixOverrides:剔除指定的前缀内容
+            suffix:给标签内的sql加上后缀
+            suffixOverrides:提出指定的后缀内容
+        -->
+        <trim prefix="where" prefixOverrides="and |or " suffix="" suffixOverrides="">
+            <if test="t_name!=null and t_name!='' ">
+                and t_name like concat('%',#{t_name},'%')
+            </if>
+            <if test="position_id!=null and position_id!=0">
+                and position_id=#{position_id}
+            </if>
+        </trim>
+        <!--where 标签替代了 sql语句中 where，在此标签里面多余的and 关键字会自动删除
+        动态sql中普通if标签 如果条件成立  则将if内的sql拼接 否则不执行-->
+        <!--<where>
+            <if test="t_name!=null and t_name!='' ">
+                and t_name like concat('%',#{t_name},'%')
+            </if>
+            <if test="position_id!=null and position_id!=0">
+                and position_id=#{position_id}
+            </if>
+        </where>-->
+    </select>
+    <update id="updTeacher1" parameterType="teacher" >
+        <!-- set：替代sql语句中set  set标签会自动去除多余的 “,”-->
+        update tb_teacher
+        <set>
+            <if test="t_no!=null and t_no!=''">
+                t_no=#{t_no},
+            </if>
+            <if test="t_name!=null and t_name!=''">
+                t_name=#{t_name},
+            </if>
+            <if test="position_id!=null and position_id!=0">
+                position_id=#{position_id}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

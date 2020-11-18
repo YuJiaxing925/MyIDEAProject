@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+">
+    <!--配置数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/user?useUnicode=true&amp;characterEncoding=utf-8"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+    </bean>
+<!--创建sqlSessionFactory对象-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--给dataSource赋值-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--加载Mybatis-config.xml文件中配置-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--加载Mybatis中mapper.xml文件中所有sql-->
+        <property name="mapperLocations" >
+            <list>
+                <value>classpath:com/yuntu/dao/*.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--手动编码配置dao层-->
+   <!-- &lt;!&ndash;实现sqlSessionFactory对象&ndash;&gt;
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        &lt;!&ndash;通过构造给值，因为sqlSessionTemplate中没有get,set&ndash;&gt;
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+&lt;!&ndash;将sqlSessionTemplate通过set方法赋值给userBizImpl中sqlSessionTemplate&ndash;&gt;
+    <bean id="userDao" class="com.yuntu.dao.UserMapperImpl">
+        <property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+    </bean>
+    <bean id="userBiz" class="com.yuntu.biz.UserBizImpl">
+        <property name="userMapper" ref="userDao"/>
+    </bean>-->
+
+    <!--<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.yuntu.dao.UserMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="userBiz" class="com.yuntu.biz.UserBizImpl">
+        <property name="userMapper" ref="userMapper"/>
+    </bean>-->
+    <!--MapperScannerConfigurer：自动装配   默认规则，首字母小写-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.yuntu.dao"/>
+    </bean>
+    <!--<bean id="userBiz" class="com.yuntu.biz.UserBizImpl">
+        <property name="userMapper" ref="userMapper"/>
+    </bean>-->
+    <context:component-scan base-package="com.yuntu.biz,com.yuntu.dao"/>
+</beans>

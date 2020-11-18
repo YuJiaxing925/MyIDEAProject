@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+    <!--id:别名,名称
+    class:当前需要创建实例的路径-->
+    <bean id="helloSpring" class="com.yuntu.pojo.HelloSpring">
+        <!--property 通过此标签给当前实例里面属性赋值
+        name：属性名称
+        value：值-->
+        <property name="name">
+            <value>张三</value>
+        </property>
+        <property name="say">
+            <value>三天不打小鬼子手都痒痒</value>
+        </property>
+    </bean>
+    <bean id="helloSpring1" class="com.yuntu.pojo.HelloSpring">
+        <!--property 通过此标签给当前实例里面属性赋值
+        name：属性名称
+        value：值-->
+        <property name="name">
+            <value>aaaa</value>
+        </property>
+        <property name="say">
+            <value>bbbbb</value>
+        </property>
+    </bean>
+    <!--两个墨盒-->
+    <bean id="colorInk" class="com.yuntu.ink.impl.ColorInk"/>
+    <bean id="greyInk" class="com.yuntu.ink.impl.GreyInk"/>
+    <!--纸张的实现 A4,B5-->
+    <bean id="a4Paper" class="com.yuntu.paper.PaperImpl">
+        <property name="charPerLine" value="10"/>
+        <property name="linePerPage" value="5"/>
+    </bean>
+    <bean id="b5Paper" class="com.yuntu.paper.PaperImpl">
+        <property name="charPerLine" value="7"/>
+        <property name="linePerPage" value="4"/>
+    </bean>
+    <!--打印机-->
+    <bean id="printer" class="com.yuntu.print.Printer">
+        <property name="ink" ref="colorInk"/>
+        <property name="paper" ref="b5Paper"/>
+    </bean>
+</beans>

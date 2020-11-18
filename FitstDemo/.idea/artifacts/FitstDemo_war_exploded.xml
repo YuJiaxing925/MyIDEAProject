@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="FitstDemo:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/FitstDemo_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="FitstDemo/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="FitstDemo" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

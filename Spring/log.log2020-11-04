@@ -1,0 +1,7 @@
+2020-11-4 09:01:18[ERROR](ErrorLogger.java:9) addUser方法发生异常java.lang.RuntimeException: 运行时异常
+2020-11-4 09:04:15[ERROR](ErrorLogger.java:9) addUser方法发生异常java.lang.RuntimeException: 运行时异常
+2020-11-4 09:06:40[ERROR](ErrorLogger.java:9) addUser方法发生异常java.lang.RuntimeException: 运行时异常
+2020-11-4 09:07:25[ERROR](ErrorLogger.java:9) addUser方法发生异常java.lang.RuntimeException: 运行时异常
+2020-11-4 09:07:29[ERROR](ErrorLogger.java:9) addUser方法发生异常java.lang.RuntimeException: 运行时异常
+2020-11-4 09:08:54[ERROR](ErrorLogger.java:9) addUser方法发生异常java.lang.RuntimeException: 运行时异常
+2020-11-4 09:23:59[ERROR](ErrorLogger.java:9) addUser方法发生异常java.lang.RuntimeException: 运行时异常

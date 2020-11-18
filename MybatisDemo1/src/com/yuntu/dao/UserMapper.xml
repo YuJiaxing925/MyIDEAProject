@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:命名空间
+    作用：对于sql语句进行分类化的管理
+    注意：使用mapper代理方法开发时，namespace有特殊作用
+ -->
+<mapper namespace="com.yuntu.dao.UserMapper">
+    <!--
+        id:映射当前文件中sql语句的表示
+        resultType:当前sql语句输出结果的映射类型
+    -->
+    <select id="count" resultType="int">
+        select count(1) as count from smbms_user;
+    </select>
+</mapper>

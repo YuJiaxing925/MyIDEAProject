@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuntu.dao.GoodsMapper" >
+
+    <resultMap id="getPage" type="Goods">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="s_id" column="s_id"/>
+        <result property="color" column="color"/>
+        <result property="money" column="money"/>
+        <association property="sort" javaType="sort">
+            <id property="s_id" column="s_id"></id>
+            <result property="s_name" column="s_name"/>
+        </association>
+    </resultMap>
+    <select id="getGoodsByPage" resultMap="getPage" parameterType="com.yuntu.util.PageUtil">
+        select g.*,s.s_id,s.s_name from goods g inner join sort s on g.s_id=s.s_id limit ${(pageindex-1)*pagesize},#{pagesize};
+    </select>
+    <select id="getCount" resultType="int">
+        select count(1) from goods;
+    </select>
+    <delete id="delGoodsById" parameterType="int">
+        delete from goods where id=#{id};
+    </delete>
+
+    <select id="getGoodsById" parameterType="int" resultMap="getPage">
+        select g.*,s.s_id,s.s_name from goods g inner join sort s on g.s_id=s.s_id where id = #{id};
+    </select>
+
+    <update id="updGoods" parameterType="Goods">
+        update goods set
+                name=#{name},
+                s_id=#{s_id},
+                color=#{color},
+                money=#{money}
+
+        where id=#{id};
+    </update>
+
+    <insert id="addGoods" parameterType="Goods">
+        insert  into goods (name,s_id,color,money) value (#{name},#{s_id},#{color},#{money});
+    </insert>
+</mapper>
+
